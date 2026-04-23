@@ -26,7 +26,7 @@ export class MovementsController {
     @Query('limit') limit: string,
     @CurrentUser() user: User,
   ) {
-    const clientFilter = user.role === UserRole.CLIENT ? user.clientId : clientId;
+    const clientFilter = user.role === UserRole.CLIENT ? (user.clientId ?? undefined) : clientId;
     return this.movementsService.findAll({
       clientId: clientFilter,
       type,

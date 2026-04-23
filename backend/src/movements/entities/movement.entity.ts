@@ -47,7 +47,7 @@ export class Movement {
   balanceAfter: number;
 
   @Column({ nullable: true })
-  notes: string;
+  notes?: string | null;
 
   @Column({ name: 'created_by_id' })
   createdById: string;

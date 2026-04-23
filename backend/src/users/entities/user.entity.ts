@@ -32,7 +32,7 @@ export class User {
   @Column({ name: 'is_active', default: true })
   isActive: boolean;
 
-  @Column({ name: 'last_login', nullable: true })
+  @Column({ name: 'last_login', type: 'timestamptz', nullable: true })
   lastLogin: Date | null;
 
   @CreateDateColumn({ name: 'created_at' })

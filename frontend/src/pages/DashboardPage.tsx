@@ -161,12 +161,12 @@ export default function DashboardPage() {
                 <AreaChart data={movementData}>
                   <defs>
                     <linearGradient id="gradEntrada" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#1E88E5" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#1E88E5" stopOpacity={0.02} />
+                      <stop offset="5%" stopColor="#1E88E5" stopOpacity={0.65} />
+                      <stop offset="95%" stopColor="#1E88E5" stopOpacity={0.12} />
                     </linearGradient>
                     <linearGradient id="gradSalida" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#E65100" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#E65100" stopOpacity={0.02} />
+                      <stop offset="5%" stopColor="#E65100" stopOpacity={0.65} />
+                      <stop offset="95%" stopColor="#E65100" stopOpacity={0.12} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E0E7EF" />
@@ -197,7 +197,7 @@ export default function DashboardPage() {
                   <Legend
                     formatter={v => (
                       <span className="text-sm text-[#5C7391]">
-                        {v === 'entrada' ? 'Entradas' : 'Salidas'}
+                        {v === 'entrada' ? 'Entrada' : v === 'salida' ? 'Salida' : 'Ajuste'}
                       </span>
                     )}
                   />
@@ -218,6 +218,16 @@ export default function DashboardPage() {
                     fill="url(#gradSalida)"
                     dot={false}
                     activeDot={{ r: 5, fill: '#E65100', strokeWidth: 0 }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="ajuste"
+                    stroke="#9BAEC8"
+                    strokeWidth={1.5}
+                    fill="none"
+                    dot={false}
+                    activeDot={{ r: 4, fill: '#9BAEC8', strokeWidth: 0 }}
+                    strokeDasharray="4 2"
                   />
                 </AreaChart>
               </ResponsiveContainer>

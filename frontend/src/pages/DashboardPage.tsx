@@ -1,7 +1,8 @@
 import { Package, Users, ArrowLeftRight, Gauge, TrendingUp, TrendingDown } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import {
-  ComposedChart,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -72,7 +73,7 @@ const kpiCards = [
     title: 'Capacidad Utilizada',
     value: stats.capacityUsed + '%',
     icon: Gauge,
-    color: '#0D2137',
+    color: '#7B1FA2',
     progress: stats.capacityUsed,
   },
 ]
@@ -89,47 +90,55 @@ export default function DashboardPage() {
       {/* KPI Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {kpiCards.map(card => (
-          <Card key={card.title} className="relative overflow-hidden">
+          <Card
+            key={card.title}
+            className="relative overflow-hidden border-0 shadow-sm"
+            style={{ borderLeft: `4px solid ${card.color}` }}
+          >
+            {/* Subtle color wash */}
             <div
-              className="absolute left-0 top-0 h-full w-1"
-              style={{ backgroundColor: card.color }}
+              className="pointer-events-none absolute right-0 top-0 h-full w-20 opacity-[0.06]"
+              style={{ background: `radial-gradient(circle at right, ${card.color}, transparent)` }}
             />
-            <CardContent className="p-6">
+            <CardContent className="relative p-5">
               <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-[#5C7391]">{card.title}</p>
-                  <p className="mt-2 text-2xl font-bold text-[#0D2137]">{card.value}</p>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-[#5C7391]">
+                    {card.title}
+                  </p>
+                  <p className="mt-2 text-3xl font-bold tracking-tight text-[#0D2137]">
+                    {card.value}
+                  </p>
                   {card.trend !== undefined && (
                     <div className="mt-2 flex items-center gap-1 text-sm">
                       {card.trend > 0 ? (
                         <>
-                          <TrendingUp className="h-4 w-4 text-[#2E7D32]" />
-                          <span className="text-[#2E7D32]">+{card.trend}%</span>
+                          <TrendingUp className="h-3.5 w-3.5 text-[#2E7D32]" />
+                          <span className="text-[#2E7D32] font-medium">+{card.trend}%</span>
+                          <span className="text-[#9BAEC8]">{card.trendLabel}</span>
                         </>
                       ) : card.trend < 0 ? (
                         <>
-                          <TrendingDown className="h-4 w-4 text-[#C62828]" />
-                          <span className="text-[#C62828]">{card.trend}%</span>
+                          <TrendingDown className="h-3.5 w-3.5 text-[#C62828]" />
+                          <span className="text-[#C62828] font-medium">{card.trend}%</span>
+                          <span className="text-[#9BAEC8]">{card.trendLabel}</span>
                         </>
                       ) : (
-                        <span className="text-[#5C7391]">{card.trendLabel}</span>
-                      )}
-                      {card.trend !== 0 && (
                         <span className="text-[#9BAEC8]">{card.trendLabel}</span>
                       )}
                     </div>
                   )}
                   {card.progress !== undefined && (
                     <div className="mt-3">
-                      <Progress value={card.progress} className="h-2" />
+                      <Progress value={card.progress} className="h-1.5" />
                     </div>
                   )}
                 </div>
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-full"
-                  style={{ backgroundColor: card.color + '15' }}
+                  className="ml-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+                  style={{ backgroundColor: card.color + '18' }}
                 >
-                  <card.icon className="h-6 w-6" style={{ color: card.color }} />
+                  <card.icon className="h-7 w-7" style={{ color: card.color }} />
                 </div>
               </div>
             </CardContent>
@@ -139,7 +148,7 @@ export default function DashboardPage() {
 
       {/* Charts Row */}
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* Movement Chart */}
+        {/* Movement Area Chart */}
         <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-[#0D2137]">
@@ -149,22 +158,68 @@ export default function DashboardPage() {
           <CardContent>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={movementData}>
+                <AreaChart data={movementData}>
+                  <defs>
+                    <linearGradient id="gradEntrada" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#1E88E5" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#1E88E5" stopOpacity={0.02} />
+                    </linearGradient>
+                    <linearGradient id="gradSalida" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#E65100" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#E65100" stopOpacity={0.02} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E0E7EF" />
-                  <XAxis dataKey="date" tick={{ fontSize: 11, fill: '#5C7391' }} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: '#5C7391' }} tickLine={false} tickFormatter={v => formatNumber(v)} />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 11, fill: '#5C7391' }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    tick={{ fontSize: 11, fill: '#5C7391' }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={v => formatNumber(v)}
+                  />
                   <Tooltip
-                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #E0E7EF', borderRadius: '8px' }}
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                      border: '1px solid #E0E7EF',
+                      borderRadius: '10px',
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                    }}
                     formatter={(value: number, name: string) => [
                       formatNumber(value) + ' t',
-                      name === 'entrada' ? 'Entrada' : name === 'salida' ? 'Salida' : 'Ajuste',
+                      name === 'entrada' ? 'Entradas' : 'Salidas',
                     ]}
                   />
-                  <Legend formatter={v => v === 'entrada' ? 'Entradas' : v === 'salida' ? 'Salidas' : 'Ajustes'} />
-                  <Bar dataKey="entrada" fill="#1E88E5" radius={[3, 3, 0, 0]} maxBarSize={20} />
-                  <Bar dataKey="salida" fill="#E65100" radius={[3, 3, 0, 0]} maxBarSize={20} />
-                  <Bar dataKey="ajuste" fill="#9BAEC8" radius={[3, 3, 0, 0]} maxBarSize={12} />
-                </ComposedChart>
+                  <Legend
+                    formatter={v => (
+                      <span className="text-sm text-[#5C7391]">
+                        {v === 'entrada' ? 'Entradas' : 'Salidas'}
+                      </span>
+                    )}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="entrada"
+                    stroke="#1E88E5"
+                    strokeWidth={2}
+                    fill="url(#gradEntrada)"
+                    dot={false}
+                    activeDot={{ r: 5, fill: '#1E88E5', strokeWidth: 0 }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="salida"
+                    stroke="#E65100"
+                    strokeWidth={2}
+                    fill="url(#gradSalida)"
+                    dot={false}
+                    activeDot={{ r: 5, fill: '#E65100', strokeWidth: 0 }}
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
@@ -178,45 +233,50 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[300px]">
+            <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={productDistribution}
                     cx="50%"
-                    cy="42%"
+                    cy="50%"
                     innerRadius={58}
                     outerRadius={85}
-                    paddingAngle={2}
+                    paddingAngle={3}
                     dataKey="value"
+                    strokeWidth={0}
                   >
                     {productDistribution.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <text x="50%" y="42%" textAnchor="middle" dominantBaseline="middle">
-                    <tspan x="50%" dy="-8" fontSize="20" fontWeight="bold" fill="#0D2137">
+                  <text x="50%" y="48%" textAnchor="middle" dominantBaseline="middle">
+                    <tspan x="50%" dy="-6" fontSize="20" fontWeight="bold" fill="#0D2137">
                       {formatNumber(productDistribution.reduce((s, d) => s + d.value, 0), 0)}
                     </tspan>
-                    <tspan x="50%" dy="20" fontSize="11" fill="#5C7391">toneladas</tspan>
+                    <tspan x="50%" dy="18" fontSize="11" fill="#5C7391">toneladas</tspan>
                   </text>
-                  <Tooltip formatter={(value: number) => [formatTons(value), 'Toneladas']} contentStyle={{ backgroundColor: '#fff', border: '1px solid #E0E7EF', borderRadius: '8px' }} />
+                  <Tooltip
+                    formatter={(value: number) => [formatTons(value), 'Toneladas']}
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                      border: '1px solid #E0E7EF',
+                      borderRadius: '10px',
+                    }}
+                  />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="mt-2 space-y-1.5">
-                {productDistribution.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <div
-                        className="h-3 w-3 rounded-full"
-                        style={{ backgroundColor: item.color }}
-                      />
-                      <span className="text-[#5C7391]">{item.name}</span>
-                    </div>
-                    <span className="font-medium text-[#0D2137]">{formatTons(item.value)}</span>
+            </div>
+            <div className="mt-3 space-y-2">
+              {productDistribution.map((item, index) => (
+                <div key={index} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+                    <span className="text-[#5C7391]">{item.name}</span>
                   </div>
-                ))}
-              </div>
+                  <span className="font-semibold text-[#0D2137]">{formatTons(item.value)}</span>
+                </div>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -232,17 +292,49 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-[350px]">
+            <div className="h-[320px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={clientBalances} layout="vertical" margin={{ left: 20 }}>
+                <BarChart data={clientBalances} layout="vertical" margin={{ left: 8, right: 8 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E0E7EF" horizontal={false} />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: '#5C7391' }} tickFormatter={v => formatNumber(v)} />
-                  <YAxis type="category" dataKey="clientName" tick={{ fontSize: 10, fill: '#5C7391' }} width={130} />
-                  <Tooltip
-                    formatter={(value: number, name: string) => [formatTons(value), name === 'palma' ? 'Aceite de Palma' : 'GLP']}
-                    contentStyle={{ backgroundColor: '#fff', border: '1px solid #E0E7EF', borderRadius: '8px' }}
+                  <XAxis
+                    type="number"
+                    tick={{ fontSize: 10, fill: '#5C7391' }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={v => formatNumber(v)}
                   />
-                  <Legend formatter={v => v === 'palma' ? 'Aceite de Palma' : 'GLP'} />
+                  <YAxis
+                    type="category"
+                    dataKey="clientName"
+                    width={105}
+                    tickLine={false}
+                    axisLine={false}
+                    tick={({ x, y, payload }) => (
+                      <text x={x} y={y} dy={4} textAnchor="end" fontSize={10} fill="#5C7391">
+                        {(payload.value as string).length > 13
+                          ? (payload.value as string).slice(0, 12) + '…'
+                          : payload.value}
+                      </text>
+                    )}
+                  />
+                  <Tooltip
+                    formatter={(value: number, name: string) => [
+                      formatTons(value),
+                      name === 'palma' ? 'Aceite de Palma' : 'GLP',
+                    ]}
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                      border: '1px solid #E0E7EF',
+                      borderRadius: '10px',
+                    }}
+                  />
+                  <Legend
+                    formatter={v => (
+                      <span className="text-sm text-[#5C7391]">
+                        {v === 'palma' ? 'Aceite de Palma' : 'GLP'}
+                      </span>
+                    )}
+                  />
                   <Bar dataKey="palma" fill="#0D2137" radius={[0, 3, 3, 0]} maxBarSize={14} stackId="a" />
                   <Bar dataKey="glp" fill="#E65100" radius={[0, 3, 3, 0]} maxBarSize={14} stackId="a" />
                 </BarChart>
@@ -253,37 +345,33 @@ export default function DashboardPage() {
 
         {/* Recent Movements */}
         <Card className="lg:col-span-5">
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-row items-center justify-between pb-3">
             <CardTitle className="text-lg font-semibold text-[#0D2137]">
               Últimos Movimientos
             </CardTitle>
-            <Link
-              to="/movements"
-              className="text-sm font-medium text-[#1E88E5] hover:underline"
-            >
+            <Link to="/movements" className="text-sm font-medium text-[#1E88E5] hover:underline">
               Ver todos →
             </Link>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="text-[#5C7391]">Fecha</TableHead>
+                <TableRow className="border-b border-[#E0E7EF]">
+                  <TableHead className="pl-6 text-[#5C7391]">Fecha</TableHead>
                   <TableHead className="text-[#5C7391]">Tipo</TableHead>
                   <TableHead className="text-[#5C7391]">Cliente</TableHead>
-                  <TableHead className="text-[#5C7391]">Producto / Calidad</TableHead>
-                  <TableHead className="text-right text-[#5C7391]">Toneladas</TableHead>
+                  <TableHead className="text-[#5C7391]">Producto</TableHead>
+                  <TableHead className="pr-6 text-right text-[#5C7391]">Ton.</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {recentMovements.map(movement => (
-                  <TableRow key={movement.id}>
-                    <TableCell className="text-sm text-[#5C7391]">
+                  <TableRow key={movement.id} className="border-b border-[#F0F4F8]">
+                    <TableCell className="pl-6 text-sm text-[#5C7391]">
                       {format(movement.date, 'd MMM', { locale: es })}
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant="secondary"
                         className={
                           movement.type === 'ENTRADA'
                             ? 'bg-green-100 text-green-700'
@@ -295,15 +383,17 @@ export default function DashboardPage() {
                         {movement.type}
                       </Badge>
                     </TableCell>
-                    <TableCell className="max-w-[120px] truncate text-sm text-[#0D2137]">
-                      {movement.clientName}
+                    <TableCell className="max-w-[100px] truncate text-sm text-[#0D2137]">
+                      {movement.clientName.split(' ')[0]}
                     </TableCell>
-                    <TableCell className="text-sm text-[#5C7391]">
-                      <div>{movement.productName.split('(')[0].trim()}</div>
+                    <TableCell className="text-sm">
+                      <div className="text-[#5C7391]">
+                        {movement.productName.includes('Palma') ? 'Palma' : 'GLP'}
+                      </div>
                       <div className="text-xs text-[#9BAEC8]">{movement.qualityName}</div>
                     </TableCell>
                     <TableCell
-                      className={`text-right text-sm font-medium ${
+                      className={`pr-6 text-right text-sm font-semibold ${
                         movement.type === 'ENTRADA'
                           ? 'text-[#2E7D32]'
                           : movement.type === 'SALIDA'
@@ -312,7 +402,7 @@ export default function DashboardPage() {
                       }`}
                     >
                       {movement.type === 'ENTRADA' ? '+' : movement.type === 'SALIDA' ? '-' : ''}
-                      {formatNumber(movement.tons, 3)}
+                      {formatNumber(movement.tons, 0)}
                     </TableCell>
                   </TableRow>
                 ))}

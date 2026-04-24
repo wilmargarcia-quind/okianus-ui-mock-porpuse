@@ -63,7 +63,7 @@ export interface Movement {
   newBalance: number
   userId: string
   userName: string
-  notes?: string
+  notes?: string | null
 }
 
 export interface InventoryBalance {

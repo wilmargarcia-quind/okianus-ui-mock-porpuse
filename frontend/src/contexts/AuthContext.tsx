@@ -7,6 +7,7 @@ interface AuthContextType {
   isLoading: boolean
   login: (email: string, password: string) => Promise<boolean>
   logout: () => void
+  switchRole: (role: 'ADMIN' | 'OPERATOR' | 'CLIENT') => void
   isAuthenticated: boolean
 }
 
@@ -58,6 +59,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem(AUTH_STORAGE_KEY)
   }
 
+  const switchRole = (role: 'ADMIN' | 'OPERATOR' | 'CLIENT') => {
+    // Pick a representative user for each role
+    const roleUserMap: Record<string, string> = {
+      ADMIN: 'admin@okianus.com',
+      OPERATOR: 'operador@okianus.com',
+      CLIENT: 'bioenergia@cliente.com',
+    }
+    const target = mockUsers.find(u => u.email === roleUserMap[role])
+    if (!target) return
+    const { password: _, ...userWithoutPassword } = target
+    setUser(userWithoutPassword)
+    localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({
+      user: userWithoutPassword,
+      token: 'mock-jwt-token-' + Date.now(),
+    }))
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -65,6 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
         login,
         logout,
+        switchRole,
         isAuthenticated: !!user,
       }}
     >

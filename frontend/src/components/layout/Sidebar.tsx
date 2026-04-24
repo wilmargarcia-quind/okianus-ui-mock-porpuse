@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   LayoutDashboard,
   ArrowLeftRight,
@@ -131,7 +131,14 @@ function NavItem({
 
 export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProps) {
   const location = useLocation()
-  const { user, logout } = useAuth()
+  const navigate = useNavigate()
+  const { user, logout, switchRole } = useAuth()
+
+  const handleSwitchRole = (role: 'ADMIN' | 'OPERATOR' | 'CLIENT') => {
+    if (user?.role === role) return
+    switchRole(role)
+    navigate(role === 'CLIENT' ? '/client/inventory' : '/dashboard')
+  }
   const [adminOpen, setAdminOpen] = useState(location.pathname.startsWith('/admin'))
 
   const isActive = (href?: string, subs?: { href: string }[]) => {
@@ -343,17 +350,44 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
         <div className="border-t border-white/8 p-3">
           {!isCollapsed ? (
             <div className="rounded-xl bg-white/5 p-3">
-              <div className="mb-2 flex items-center gap-2.5">
+              {/* Name + avatar */}
+              <div className="mb-3 flex items-center gap-2.5">
                 <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold', roleConf.bg)}>
                   {initials}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-[13px] font-semibold text-white">{user?.name}</p>
-                  <span className={cn('inline-block rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide', roleConf.bg, roleConf.color)}>
-                    {roleConf.label}
-                  </span>
+                  <p className="text-[11px] text-white/40">Demo — cambiar rol abajo</p>
                 </div>
               </div>
+
+              {/* Role switcher */}
+              <div className="mb-2.5 grid grid-cols-3 gap-1.5">
+                {(
+                  [
+                    { role: 'ADMIN', label: 'Admin', color: 'bg-[#1E88E5]' },
+                    { role: 'OPERATOR', label: 'Operador', color: 'bg-emerald-600' },
+                    { role: 'CLIENT', label: 'Cliente', color: 'bg-[#5C7391]' },
+                  ] as const
+                ).map(opt => {
+                  const active = user?.role === opt.role
+                  return (
+                    <button
+                      key={opt.role}
+                      onClick={() => handleSwitchRole(opt.role)}
+                      className={cn(
+                        'rounded-lg px-1.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide transition-all',
+                        active
+                          ? cn(opt.color, 'text-white shadow-sm')
+                          : 'bg-white/5 text-white/40 hover:bg-white/10 hover:text-white/70'
+                      )}
+                    >
+                      {opt.label}
+                    </button>
+                  )
+                })}
+              </div>
+
               <button
                 onClick={logout}
                 className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-white/50 transition-colors hover:bg-white/8 hover:text-white"

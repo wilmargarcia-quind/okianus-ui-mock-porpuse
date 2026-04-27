@@ -14,7 +14,7 @@ interface Message {
 
 // ─── Webhook config ───────────────────────────────────────────────────────────
 
-const WEBHOOK_URL = 'https://automations.quind.io/webhook/0b753b94-1a88-4a80-80a7-6a5ae4930f7c'
+const WEBHOOK_URL = '/api/chat'
 
 // Persist session ID across component remounts
 function getSessionId(): string {

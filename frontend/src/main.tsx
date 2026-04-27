@@ -6,6 +6,7 @@ import { Toaster } from 'sonner'
 import App from './App'
 import { AuthProvider } from './contexts/AuthContext'
 import './globals.css'
+import 'driver.js/dist/driver.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {

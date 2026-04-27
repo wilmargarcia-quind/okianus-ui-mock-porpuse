@@ -1,18 +1,9 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
-  LayoutDashboard,
-  ArrowLeftRight,
-  Activity,
-  FileText,
-  Settings,
-  Users,
-  Package,
-  Database,
-  LogOut,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Anchor,
+  LayoutDashboard, ArrowLeftRight, Activity, FileText, Settings,
+  Users, Package, Database, LogOut, ChevronDown, ChevronLeft,
+  ChevronRight, Anchor, Truck, RotateCw, ClipboardList, Scale,
+  Waves, Percent,
 } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -30,17 +21,52 @@ interface SidebarProps {
 }
 
 const TOTAL_INVENTORY = mockInventoryBalances.reduce((s, b) => s + b.balance, 0)
-const TODAY_MOVEMENTS = 7
+const TODAY_VEHICLES  = 7
 
 const navSections = [
   {
-    label: 'OPERACIÓN',
+    label: 'PRINCIPAL',
     roles: ['ADMIN', 'OPERATOR'],
     items: [
-      { label: 'Panel Principal', icon: LayoutDashboard, href: '/dashboard' },
-      { label: 'Gestión de Inventario', icon: ArrowLeftRight, href: '/inventory' },
-      { label: 'Movimientos', icon: Activity, href: '/movements' },
-      { label: 'Reportes', icon: FileText, href: '/reports' },
+      { label: 'Panel Principal',      icon: LayoutDashboard, href: '/dashboard' },
+    ],
+  },
+  {
+    label: 'CICLO OPERATIVO',
+    roles: ['ADMIN', 'OPERATOR'],
+    items: [
+      {
+        label: 'Conductores & Turnos',
+        icon: Truck,
+        subItems: [
+          { label: 'Pre-registro & RUNT',      href: '/operation/drivers', icon: Truck         },
+          { label: 'Asignación de Turnos',     href: '/operation/turnos',  icon: RotateCw      },
+        ],
+      },
+      {
+        label: 'Ciclo en Planta',
+        icon: Waves,
+        subItems: [
+          { label: 'Patio & Checklist',        href: '/operation/patio',   icon: ClipboardList },
+          { label: 'Pesaje Sicompas',          href: '/operation/pesaje',  icon: Scale         },
+          { label: 'Bahía & Salida',           href: '/operation/bahia',   icon: Waves         },
+        ],
+      },
+    ],
+  },
+  {
+    label: 'INVENTARIO',
+    roles: ['ADMIN', 'OPERATOR'],
+    items: [
+      { label: 'Gestión de Inventario', icon: ArrowLeftRight, href: '/inventory'  },
+      { label: 'Movimientos',           icon: Activity,       href: '/movements'  },
+    ],
+  },
+  {
+    label: 'REPORTES',
+    roles: ['ADMIN'],
+    items: [
+      { label: 'Reportes Automáticos',  icon: FileText,       href: '/reports'    },
     ],
   },
   {
@@ -51,10 +77,11 @@ const navSections = [
         label: 'Administración',
         icon: Settings,
         subItems: [
-          { label: 'Clientes', href: '/admin/clients', icon: Users },
-          { label: 'Productos y Calidades', href: '/admin/products', icon: Package },
-          { label: 'Tanques', href: '/admin/tanks', icon: Database },
-          { label: 'Usuarios', href: '/admin/users', icon: Users },
+          { label: 'Clientes',               href: '/admin/clients',        icon: Users    },
+          { label: 'Productos y Calidades',  href: '/admin/products',       icon: Package  },
+          { label: 'Tanques',                href: '/admin/tanks',          icon: Database },
+          { label: 'Usuarios',               href: '/admin/users',          icon: Users    },
+          { label: '% Participación',        href: '/admin/participation',  icon: Percent  },
         ],
       },
     ],
@@ -62,88 +89,73 @@ const navSections = [
 ]
 
 const clientNav = [
-  { label: 'Mi Inventario', icon: Package, href: '/client/inventory' },
-  { label: 'Mis Reportes', icon: FileText, href: '/client/reports' },
+  { label: 'Mi Inventario',   icon: Package,  href: '/client/inventory' },
+  { label: 'Mis Vehículos',   icon: Truck,    href: '/client/vehicles'  },
+  { label: 'Mis Reportes',    icon: FileText, href: '/client/reports'   },
 ]
 
 const ROLE_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  ADMIN: { label: 'Administrador', color: 'text-white', bg: 'bg-[#1E88E5]' },
-  OPERATOR: { label: 'Operador', color: 'text-white', bg: 'bg-emerald-600' },
-  CLIENT: { label: 'Cliente', color: 'text-white', bg: 'bg-[#5C7391]' },
+  ADMIN:    { label: 'Administrador', color: 'text-white', bg: 'bg-[#1E88E5]' },
+  OPERATOR: { label: 'Operador',      color: 'text-white', bg: 'bg-emerald-600' },
+  CLIENT:   { label: 'Cliente',       color: 'text-white', bg: 'bg-[#5C7391]' },
 }
 
 function formatTons(n: number) {
   return new Intl.NumberFormat('es-CO', { maximumFractionDigits: 0 }).format(n) + ' t'
 }
 
-function NavItem({
-  href,
-  icon: Icon,
-  label,
-  isActive,
-  isCollapsed,
-  onClick,
-}: {
-  href: string
-  icon: React.ElementType
-  label: string
-  isActive: boolean
-  isCollapsed: boolean
-  onClick?: () => void
+function NavItem({ href, icon: Icon, label, isActive, isCollapsed, onClick }: {
+  href: string; icon: React.ElementType; label: string; isActive: boolean; isCollapsed: boolean; onClick?: () => void
 }) {
   const inner = (
     <Link
-      to={href}
-      onClick={onClick}
+      to={href} onClick={onClick}
       className={cn(
         'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-150',
-        isActive
-          ? 'bg-[#1E88E5] text-white shadow-md shadow-[#1E88E5]/20'
-          : 'text-white/60 hover:bg-white/8 hover:text-white',
+        isActive ? 'bg-[#1E88E5] text-white shadow-md shadow-[#1E88E5]/20' : 'text-white/60 hover:bg-white/8 hover:text-white',
         isCollapsed && 'justify-center px-0'
       )}
     >
-      <Icon
-        className={cn(
-          'h-[18px] w-[18px] shrink-0',
-          isActive ? 'text-white' : 'text-white/50 group-hover:text-white'
-        )}
-      />
+      <Icon className={cn('h-[18px] w-[18px] shrink-0', isActive ? 'text-white' : 'text-white/50 group-hover:text-white')} />
       {!isCollapsed && <span>{label}</span>}
     </Link>
   )
-
   if (isCollapsed) {
     return (
       <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger asChild>{inner}</TooltipTrigger>
-          <TooltipContent side="right" className="bg-[#0D2137] text-white border-white/10">
-            {label}
-          </TooltipContent>
+          <TooltipContent side="right" className="bg-[#0D2137] text-white border-white/10">{label}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     )
   }
-
   return inner
 }
 
 export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProps) {
-  const location = useLocation()
-  const navigate = useNavigate()
+  const location  = useLocation()
+  const navigate  = useNavigate()
   const { user, logout, switchRole } = useAuth()
+
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({
+    'Conductores & Turnos': location.pathname.startsWith('/operation/drivers') || location.pathname.startsWith('/operation/turnos'),
+    'Ciclo en Planta':      location.pathname.startsWith('/operation/patio') || location.pathname.startsWith('/operation/pesaje') || location.pathname.startsWith('/operation/bahia'),
+    'Administración':       location.pathname.startsWith('/admin'),
+  })
+
+  const toggleSection = (label: string) =>
+    setOpenSections(prev => ({ ...prev, [label]: !prev[label] }))
 
   const handleSwitchRole = (role: 'ADMIN' | 'OPERATOR' | 'CLIENT') => {
     if (user?.role === role) return
     switchRole(role)
     navigate(role === 'CLIENT' ? '/client/inventory' : '/dashboard')
   }
-  const [adminOpen, setAdminOpen] = useState(location.pathname.startsWith('/admin'))
 
   const isActive = (href?: string, subs?: { href: string }[]) => {
-    if (href) return location.pathname === href
-    if (subs) return subs.some(s => location.pathname === s.href)
+    if (href)  return location.pathname === href
+    if (subs)  return subs.some(s => location.pathname === s.href)
     return false
   }
 
@@ -153,60 +165,37 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
 
   return (
     <>
-      {/* Mobile overlay */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={onClose}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden" onClick={onClose} />}
 
-      <aside
-        className={cn(
-          'fixed inset-y-0 left-0 z-40 flex flex-col transition-all duration-300 lg:relative',
-          'bg-gradient-to-b from-[#0A1628] via-[#0D2137] to-[#0A1628]',
-          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-          isCollapsed ? 'w-[68px]' : 'w-[272px]'
-        )}
-      >
-        {/* ── LOGO + COLLAPSE TOGGLE ── */}
+      <aside className={cn(
+        'fixed inset-y-0 left-0 z-40 flex flex-col transition-all duration-300 lg:relative',
+        'bg-gradient-to-b from-[#0A1628] via-[#0D2137] to-[#0A1628]',
+        isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
+        isCollapsed ? 'w-[68px]' : 'w-[272px]'
+      )}>
+
+        {/* LOGO */}
         <div className="relative flex h-[64px] items-center border-b border-white/8 px-3">
-          <Link
-            to="/"
-            className={cn('flex min-w-0 items-center gap-3', isCollapsed && 'justify-center w-full')}
-            onClick={onClose}
-          >
+          <Link to="/" className={cn('flex min-w-0 items-center gap-3', isCollapsed && 'justify-center w-full')} onClick={onClose}>
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1E88E5] to-[#1565C0] shadow-lg shadow-[#1E88E5]/20">
               <Anchor className="h-5 w-5 text-white" />
             </div>
             {!isCollapsed && (
               <div className="flex flex-col leading-tight">
                 <span className="text-[15px] font-bold tracking-wide text-white">OKIANUS</span>
-                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#1E88E5]">
-                  Terminals
-                </span>
+                <span className="text-[10px] font-medium uppercase tracking-[0.15em] text-[#1E88E5]">Terminals</span>
               </div>
             )}
           </Link>
-
-          {/* Collapse toggle — outside the Link, absolutely placed */}
           <button
             onClick={onToggleCollapse}
-            title={isCollapsed ? 'Expandir menú' : 'Colapsar menú'}
-            className={cn(
-              'absolute hidden h-6 w-6 items-center justify-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white/90 lg:flex',
-              isCollapsed ? 'right-1 top-1/2 -translate-y-1/2' : 'right-2 top-1/2 -translate-y-1/2'
-            )}
+            className={cn('absolute hidden h-6 w-6 items-center justify-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white/90 lg:flex', isCollapsed ? 'right-1 top-1/2 -translate-y-1/2' : 'right-2 top-1/2 -translate-y-1/2')}
           >
-            {isCollapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
+            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </button>
         </div>
 
-        {/* ── TERMINAL STATUS STRIP (expanded, admin/operator only) ── */}
+        {/* TERMINAL STATUS */}
         {!isCollapsed && !isClient && (
           <div className="mx-3 mt-3 rounded-xl border border-white/8 bg-white/4 px-3 py-2.5">
             <div className="mb-2 flex items-center gap-1.5">
@@ -214,9 +203,7 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">
-                Terminal Activo
-              </span>
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-400">Terminal Activo</span>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="rounded-lg bg-white/5 px-2.5 py-1.5">
@@ -224,192 +211,118 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
                 <p className="mt-0.5 text-sm font-bold text-white">{formatTons(TOTAL_INVENTORY)}</p>
               </div>
               <div className="rounded-lg bg-white/5 px-2.5 py-1.5">
-                <p className="text-[10px] text-white/40">Movimientos Hoy</p>
-                <p className="mt-0.5 text-sm font-bold text-white">{TODAY_MOVEMENTS}</p>
+                <p className="text-[10px] text-white/40">Vehículos Hoy</p>
+                <p className="mt-0.5 text-sm font-bold text-white">{TODAY_VEHICLES}</p>
               </div>
             </div>
           </div>
         )}
 
-        {/* ── NAVIGATION ── */}
+        {/* NAVIGATION */}
         <ScrollArea className="flex-1 py-3">
           <nav className={cn('space-y-0.5', isCollapsed ? 'px-1.5' : 'px-2')}>
             {isClient ? (
               <>
-                {!isCollapsed && (
-                  <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                    Mi cuenta
-                  </p>
-                )}
+                {!isCollapsed && <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-widest text-white/30">Mi cuenta</p>}
                 {clientNav.map(item => (
-                  <NavItem
-                    key={item.href}
-                    href={item.href}
-                    icon={item.icon}
-                    label={item.label}
-                    isActive={isActive(item.href)}
-                    isCollapsed={isCollapsed}
-                    onClick={onClose}
-                  />
+                  <NavItem key={item.href} href={item.href} icon={item.icon} label={item.label}
+                    isActive={isActive(item.href)} isCollapsed={isCollapsed} onClick={onClose} />
                 ))}
               </>
             ) : (
-              navSections
-                .filter(s => user && s.roles.some(r => r === user.role))
-                .map(section => (
-                  <div key={section.label} className="mb-2">
-                    {!isCollapsed && (
-                      <p className="mb-1 px-3 pt-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">
-                        {section.label}
-                      </p>
-                    )}
-                    {section.items.map(item => {
-                      if ('subItems' in item && item.subItems) {
-                        if (isCollapsed) {
-                          // When collapsed show sub-items icons directly
-                          return item.subItems.map(sub => (
-                            <NavItem
-                              key={sub.href}
-                              href={sub.href}
-                              icon={sub.icon}
-                              label={sub.label}
-                              isActive={location.pathname === sub.href}
-                              isCollapsed={isCollapsed}
-                              onClick={onClose}
-                            />
-                          ))
-                        }
-                        return (
-                          <Collapsible
-                            key={item.label}
-                            open={adminOpen}
-                            onOpenChange={setAdminOpen}
-                          >
-                            <CollapsibleTrigger asChild>
-                              <button
-                                className={cn(
-                                  'group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all',
-                                  isActive(undefined, item.subItems)
-                                    ? 'bg-[#1E88E5] text-white shadow-md shadow-[#1E88E5]/20'
-                                    : 'text-white/60 hover:bg-white/8 hover:text-white'
-                                )}
-                              >
-                                <item.icon className="h-[18px] w-[18px] shrink-0" />
-                                <span className="flex-1 text-left">{item.label}</span>
-                                <ChevronDown
-                                  className={cn(
-                                    'h-4 w-4 transition-transform text-white/40',
-                                    adminOpen && 'rotate-180'
-                                  )}
-                                />
-                              </button>
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                              <div className="ml-3 mt-0.5 space-y-0.5 border-l border-white/10 pl-4">
-                                {item.subItems.map(sub => (
-                                  <Link
-                                    key={sub.href}
-                                    to={sub.href}
-                                    onClick={onClose}
-                                    className={cn(
-                                      'block rounded-lg px-3 py-1.5 text-[13px] transition-colors',
-                                      location.pathname === sub.href
-                                        ? 'font-medium text-[#1E88E5]'
-                                        : 'text-white/50 hover:text-white'
-                                    )}
-                                  >
-                                    {sub.label}
-                                  </Link>
-                                ))}
-                              </div>
-                            </CollapsibleContent>
-                          </Collapsible>
-                        )
+              navSections.filter(s => user && s.roles.some(r => r === user.role)).map(section => (
+                <div key={section.label} className="mb-2">
+                  {!isCollapsed && (
+                    <p className="mb-1 px-3 pt-2 text-[10px] font-semibold uppercase tracking-widest text-white/30">{section.label}</p>
+                  )}
+                  {section.items.map(item => {
+                    if ('subItems' in item && item.subItems) {
+                      if (isCollapsed) {
+                        return item.subItems.map(sub => (
+                          <NavItem key={sub.href} href={sub.href} icon={sub.icon} label={sub.label}
+                            isActive={location.pathname === sub.href} isCollapsed={isCollapsed} onClick={onClose} />
+                        ))
                       }
-
-                      const navItem = item as { label: string; icon: React.ElementType; href: string }
+                      const open = !!openSections[item.label]
+                      const anyActive = item.subItems.some(s => location.pathname === s.href)
                       return (
-                        <NavItem
-                          key={navItem.href}
-                          href={navItem.href}
-                          icon={navItem.icon}
-                          label={navItem.label}
-                          isActive={isActive(navItem.href)}
-                          isCollapsed={isCollapsed}
-                          onClick={onClose}
-                        />
+                        <Collapsible key={item.label} open={open} onOpenChange={() => toggleSection(item.label)}>
+                          <CollapsibleTrigger asChild>
+                            <button
+                              id={
+                                item.label === 'Conductores & Turnos' ? 'tour-nav-conductores' :
+                                item.label === 'Ciclo en Planta'      ? 'tour-nav-ciclo'        :
+                                item.label === 'Administración'       ? 'tour-nav-admin'        :
+                                undefined
+                              }
+                              className={cn(
+                              'group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all',
+                              anyActive ? 'bg-white/8 text-white' : 'text-white/60 hover:bg-white/8 hover:text-white'
+                            )}>
+                              <item.icon className="h-[18px] w-[18px] shrink-0" />
+                              <span className="flex-1 text-left">{item.label}</span>
+                              <ChevronDown className={cn('h-4 w-4 transition-transform text-white/40', open && 'rotate-180')} />
+                            </button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent>
+                            <div className="ml-3 mt-0.5 space-y-0.5 border-l border-white/10 pl-4">
+                              {item.subItems.map(sub => (
+                                <Link key={sub.href} to={sub.href} onClick={onClose}
+                                  className={cn('block rounded-lg px-3 py-1.5 text-[13px] transition-colors',
+                                    location.pathname === sub.href ? 'font-medium text-[#1E88E5]' : 'text-white/50 hover:text-white'
+                                  )}>
+                                  {sub.label}
+                                </Link>
+                              ))}
+                            </div>
+                          </CollapsibleContent>
+                        </Collapsible>
                       )
-                    })}
-                  </div>
-                ))
+                    }
+
+                    const navItem = item as { label: string; icon: React.ElementType; href: string }
+                    return (
+                      <NavItem key={navItem.href} href={navItem.href} icon={navItem.icon} label={navItem.label}
+                        isActive={isActive(navItem.href)} isCollapsed={isCollapsed} onClick={onClose} />
+                    )
+                  })}
+                </div>
+              ))
             )}
           </nav>
         </ScrollArea>
 
-        {/* ── USER CARD ── */}
-        <div className="border-t border-white/8 p-3">
+        {/* USER CARD */}
+        <div className="shrink-0 border-t border-white/8 p-2.5">
           {!isCollapsed ? (
-            <div className="rounded-xl bg-white/5 p-3">
-              {/* Name + avatar */}
-              <div className="mb-3 flex items-center gap-2.5">
-                <div className={cn('flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold', roleConf.bg)}>
-                  {initials}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[13px] font-semibold text-white">{user?.name}</p>
-                  <p className="text-[11px] text-white/40">Demo — cambiar rol abajo</p>
-                </div>
+            <div className="flex items-center gap-2.5 rounded-xl bg-white/5 px-3 py-2.5">
+              <div className={cn('flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-bold', roleConf.bg)}>
+                {initials}
               </div>
-
-              {/* Role switcher */}
-              <div className="mb-2.5 grid grid-cols-3 gap-1.5">
-                {(
-                  [
-                    { role: 'ADMIN', label: 'Admin', color: 'bg-[#1E88E5]' },
-                    { role: 'OPERATOR', label: 'Operador', color: 'bg-emerald-600' },
-                    { role: 'CLIENT', label: 'Cliente', color: 'bg-[#5C7391]' },
-                  ] as const
-                ).map(opt => {
-                  const active = user?.role === opt.role
-                  return (
-                    <button
-                      key={opt.role}
-                      onClick={() => handleSwitchRole(opt.role)}
-                      className={cn(
-                        'rounded-lg px-1.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide transition-all',
-                        active
-                          ? cn(opt.color, 'text-white shadow-sm')
-                          : 'bg-white/5 text-white/40 hover:bg-white/10 hover:text-white/70'
-                      )}
-                    >
-                      {opt.label}
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[13px] font-semibold leading-tight text-white">{user?.name}</p>
+                <p className="text-[11px] leading-tight text-white/40">{roleConf.label}</p>
+              </div>
+              <TooltipProvider delayDuration={100}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button onClick={logout} className="ml-1 rounded-lg p-1.5 text-white/30 transition-colors hover:bg-white/10 hover:text-white/80">
+                      <LogOut className="h-3.5 w-3.5" />
                     </button>
-                  )
-                })}
-              </div>
-
-              <button
-                onClick={logout}
-                className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-white/50 transition-colors hover:bg-white/8 hover:text-white"
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                Cerrar sesión
-              </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="bg-[#0D2137] text-white border-white/10">Cerrar sesión</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           ) : (
             <TooltipProvider delayDuration={100}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button
-                    onClick={logout}
-                    className="flex w-full items-center justify-center rounded-lg py-2 text-white/40 hover:bg-white/8 hover:text-white"
-                  >
+                  <button onClick={logout} className="flex w-full items-center justify-center rounded-lg py-2 text-white/40 hover:bg-white/8 hover:text-white">
                     <LogOut className="h-4 w-4" />
                   </button>
                 </TooltipTrigger>
-                <TooltipContent side="right" className="bg-[#0D2137] text-white border-white/10">
-                  Cerrar sesión
-                </TooltipContent>
+                <TooltipContent side="right" className="bg-[#0D2137] text-white border-white/10">Cerrar sesión</TooltipContent>
               </Tooltip>
             </TooltipProvider>
           )}

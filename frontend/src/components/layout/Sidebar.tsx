@@ -175,8 +175,8 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
       )}>
 
         {/* LOGO */}
-        <div className="relative flex h-[64px] items-center border-b border-white/8 px-3">
-          <Link to="/" className={cn('flex min-w-0 items-center gap-3', isCollapsed && 'justify-center w-full')} onClick={onClose}>
+        <div className="flex h-[64px] items-center border-b border-white/8 px-3">
+          <Link to="/" className={cn('flex min-w-0 flex-1 items-center gap-3', isCollapsed && 'justify-center')} onClick={onClose}>
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#1E88E5] to-[#1565C0] shadow-lg shadow-[#1E88E5]/20">
               <Anchor className="h-5 w-5 text-white" />
             </div>
@@ -187,13 +187,26 @@ export default function Sidebar({ isOpen, onClose, isCollapsed, onToggleCollapse
               </div>
             )}
           </Link>
+          {/* Collapse toggle — only visible when expanded */}
+          {!isCollapsed && (
+            <button
+              onClick={onToggleCollapse}
+              className="hidden h-7 w-7 shrink-0 items-center justify-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white/90 lg:flex"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {/* Expand toggle — only when collapsed, gets its own centered row */}
+        {isCollapsed && (
           <button
             onClick={onToggleCollapse}
-            className={cn('absolute hidden h-6 w-6 items-center justify-center rounded-md text-white/40 transition-colors hover:bg-white/10 hover:text-white/90 lg:flex', isCollapsed ? 'right-1 top-1/2 -translate-y-1/2' : 'right-2 top-1/2 -translate-y-1/2')}
+            className="hidden w-full items-center justify-center border-b border-white/8 py-2 text-white/40 transition-colors hover:bg-white/8 hover:text-white/90 lg:flex"
           >
-            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            <ChevronRight className="h-4 w-4" />
           </button>
-        </div>
+        )}
 
         {/* TERMINAL STATUS */}
         {!isCollapsed && !isClient && (

@@ -1,0 +1,430 @@
+{
+  "users": [
+    { "id": "u1", "email": "admin@okianus.com",     "password": "admin123", "name": "Wilmer Hernández",  "role": "ADMIN" },
+    { "id": "u2", "email": "operador@okianus.com",  "password": "op123",    "name": "Carlos Mendoza",    "role": "OPERATOR" },
+    { "id": "u3", "email": "operador2@okianus.com", "password": "op123",    "name": "Ana Rojas",         "role": "OPERATOR" },
+    { "id": "u4", "email": "bioe@cliente.com",      "password": "cli123",   "name": "Laura Gómez",       "role": "CLIENT", "clientId": "CLI-001", "clientName": "BioEnergía S.A." },
+    { "id": "u5", "email": "petro@cliente.com",     "password": "cli123",   "name": "Ricardo Palomino",  "role": "CLIENT", "clientId": "CLI-002", "clientName": "PetroAndina Ltda." },
+    { "id": "u6", "email": "palmas@cliente.com",    "password": "cli123",   "name": "Sofía Vargas",      "role": "CLIENT", "clientId": "CLI-003", "clientName": "Palmas del Norte" },
+    { "id": "u7", "email": "combus@cliente.com",    "password": "cli123",   "name": "Marcos Díaz",       "role": "CLIENT", "clientId": "CLI-004", "clientName": "Combustibles del Caribe" },
+    { "id": "u8", "email": "refineria@cliente.com", "password": "cli123",   "name": "Elena Torres",      "role": "CLIENT", "clientId": "CLI-005", "clientName": "Refinería Costa" }
+  ],
+
+  "clients": [
+    { "id": "CLI-001", "code": "CLI-001", "name": "BioEnergía S.A.",          "email": "ops@bioenergia.com",        "phone": "3001234501", "active": true,  "usersCount": 2 },
+    { "id": "CLI-002", "code": "CLI-002", "name": "PetroAndina Ltda.",         "email": "inventario@petroandina.co", "phone": "3001234502", "active": true,  "usersCount": 1 },
+    { "id": "CLI-003", "code": "CLI-003", "name": "Palmas del Norte",          "email": "logistica@palmasnorte.com", "phone": "3001234503", "active": true,  "usersCount": 3 },
+    { "id": "CLI-004", "code": "CLI-004", "name": "Combustibles del Caribe",   "email": "ops@combustiblescar.com",   "phone": "3001234504", "active": true,  "usersCount": 2 },
+    { "id": "CLI-005", "code": "CLI-005", "name": "Refinería Costa",           "email": "inv@refineriacosta.co",     "phone": "3001234505", "active": true,  "usersCount": 1 },
+    { "id": "CLI-006", "code": "CLI-006", "name": "Aceites del Pacífico",      "email": "ops@aceitespac.com",        "phone": "3001234506", "active": true,  "usersCount": 2 },
+    { "id": "CLI-007", "code": "CLI-007", "name": "GLP Occidente S.A.S.",      "email": "logistica@glpocc.com",      "phone": "3001234507", "active": true,  "usersCount": 1 },
+    { "id": "CLI-008", "code": "CLI-008", "name": "Termales Energía",          "email": "inv@termalesenergia.co",    "phone": "3001234508", "active": false, "usersCount": 1 },
+    { "id": "CLI-009", "code": "CLI-009", "name": "Agroindustrial Bolívar",    "email": "ops@agrobolivar.com",       "phone": "3001234509", "active": true,  "usersCount": 2 },
+    { "id": "CLI-010", "code": "CLI-010", "name": "Distribuidora Nacional",    "email": "inv@distnacional.co",       "phone": "3001234510", "active": true,  "usersCount": 1 }
+  ],
+
+  "products": [
+    {
+      "id": "PRD-001", "code": "PALMA", "name": "Aceite de Palma", "active": true,
+      "qualities": [
+        { "id": "Q-001", "code": "AP", "name": "Alta Pureza",  "description": "Índice de acidez < 0.1%",    "active": true, "productId": "PRD-001" },
+        { "id": "Q-002", "code": "ST", "name": "Estándar",     "description": "Índice de acidez 0.1–0.5%",  "active": true, "productId": "PRD-001" },
+        { "id": "Q-003", "code": "IN", "name": "Industrial",   "description": "Índice de acidez > 0.5%",    "active": true, "productId": "PRD-001" }
+      ]
+    },
+    {
+      "id": "PRD-002", "code": "GLP", "name": "GLP - Gas Licuado de Petróleo", "active": true,
+      "qualities": [
+        { "id": "Q-004", "code": "PP", "name": "Propano Puro",     "description": "Pureza > 99%",              "active": true, "productId": "PRD-002" },
+        { "id": "Q-005", "code": "MC", "name": "Mezcla Comercial", "description": "Propano/Butano 60/40",      "active": true, "productId": "PRD-002" }
+      ]
+    }
+  ],
+
+  "tanks": [
+    { "id": "TQ-001", "code": "TQ-001", "name": "Tanque Palma 1",  "capacity": 2500, "status": "active" },
+    { "id": "TQ-002", "code": "TQ-002", "name": "Tanque Palma 2",  "capacity": 3000, "status": "active" },
+    { "id": "TQ-003", "code": "TQ-003", "name": "Tanque Palma 3",  "capacity": 2000, "status": "maintenance" },
+    { "id": "TQ-004", "code": "TQ-004", "name": "Tanque GLP 1",    "capacity": 1500, "status": "active" },
+    { "id": "TQ-005", "code": "TQ-005", "name": "Tanque GLP 2",    "capacity": 1200, "status": "active" },
+    { "id": "TQ-006", "code": "TQ-006", "name": "Tanque Reserva",  "capacity": 3500, "status": "inactive" }
+  ],
+
+  "inventory_balances": [
+    { "id": "IB-001", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "balance": 312.5, "lastMovementDate": "2026-04-23", "status": "OK" },
+    { "id": "IB-002", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "balance": 185.0, "lastMovementDate": "2026-04-22", "status": "OK" },
+    { "id": "IB-003", "clientId": "CLI-002", "clientName": "PetroAndina Ltda.",        "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-004", "qualityName": "Propano Puro",     "balance": 88.0,  "lastMovementDate": "2026-04-23", "status": "BAJO" },
+    { "id": "IB-004", "clientId": "CLI-003", "clientName": "Palmas del Norte",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "balance": 445.0, "lastMovementDate": "2026-04-21", "status": "OK" },
+    { "id": "IB-005", "clientId": "CLI-003", "clientName": "Palmas del Norte",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-003", "qualityName": "Industrial",       "balance": 120.0, "lastMovementDate": "2026-04-20", "status": "OK" },
+    { "id": "IB-006", "clientId": "CLI-004", "clientName": "Combustibles del Caribe",  "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-005", "qualityName": "Mezcla Comercial", "balance": 210.0, "lastMovementDate": "2026-04-23", "status": "OK" },
+    { "id": "IB-007", "clientId": "CLI-005", "clientName": "Refinería Costa",          "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "balance": 18.5,  "lastMovementDate": "2026-04-22", "status": "CRITICO" },
+    { "id": "IB-008", "clientId": "CLI-006", "clientName": "Aceites del Pacífico",     "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "balance": 275.0, "lastMovementDate": "2026-04-23", "status": "OK" },
+    { "id": "IB-009", "clientId": "CLI-007", "clientName": "GLP Occidente S.A.S.",     "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-004", "qualityName": "Propano Puro",     "balance": 156.5, "lastMovementDate": "2026-04-22", "status": "OK" },
+    { "id": "IB-010", "clientId": "CLI-009", "clientName": "Agroindustrial Bolívar",   "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "balance": 390.0, "lastMovementDate": "2026-04-23", "status": "OK" }
+  ],
+
+  "space_loans": [
+    { "id": "SL-001", "lenderId": "CLI-003", "lenderName": "Palmas del Norte",        "borrowerId": "CLI-001", "borrowerName": "BioEnergía S.A.",      "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 50.0, "date": "2026-04-18", "returnDate": null,         "status": "ACTIVO",   "notes": "Acuerdo aprobado por ambas partes" },
+    { "id": "SL-002", "lenderId": "CLI-006", "lenderName": "Aceites del Pacífico",    "borrowerId": "CLI-005", "borrowerName": "Refinería Costa",       "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "tons": 30.0, "date": "2026-04-20", "returnDate": "2026-04-23", "status": "DEVUELTO", "notes": "Devuelto según acuerdo" },
+    { "id": "SL-003", "lenderId": "CLI-004", "lenderName": "Combustibles del Caribe", "borrowerId": "CLI-007", "borrowerName": "GLP Occidente S.A.S.", "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-005", "qualityName": "Mezcla Comercial", "tons": 25.0, "date": "2026-04-22", "returnDate": null,         "status": "ACTIVO",   "notes": "Préstamo urgente por déficit operativo" }
+  ],
+
+  "movements": [
+    { "id": "MOV-001", "date": "2026-04-23", "type": "ENTRADA", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 45.0,  "previousBalance": 267.5, "newBalance": 312.5, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-002", "date": "2026-04-23", "type": "SALIDA",  "clientId": "CLI-004", "clientName": "Combustibles del Caribe", "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-005", "qualityName": "Mezcla Comercial", "tons": 30.0,  "previousBalance": 240.0, "newBalance": 210.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-003", "date": "2026-04-23", "type": "ENTRADA", "clientId": "CLI-009", "clientName": "Agroindustrial Bolívar",  "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "tons": 60.0,  "previousBalance": 330.0, "newBalance": 390.0, "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-004", "date": "2026-04-23", "type": "SALIDA",  "clientId": "CLI-006", "clientName": "Aceites del Pacífico",    "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 25.0,  "previousBalance": 300.0, "newBalance": 275.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-005", "date": "2026-04-22", "type": "ENTRADA", "clientId": "CLI-003", "clientName": "Palmas del Norte",        "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 80.0,  "previousBalance": 365.0, "newBalance": 445.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-006", "date": "2026-04-22", "type": "SALIDA",  "clientId": "CLI-005", "clientName": "Refinería Costa",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "tons": 40.0,  "previousBalance": 58.5,  "newBalance": 18.5,  "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-007", "date": "2026-04-22", "type": "AJUSTE",  "clientId": "CLI-002", "clientName": "PetroAndina Ltda.",        "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-004", "qualityName": "Propano Puro",     "tons": -2.0,  "previousBalance": 90.0,  "newBalance": 88.0,  "userId": "u1", "userName": "Wilmer Hernández", "notes": "Ajuste por diferencia en pesaje báscula — dictamen lab" },
+    { "id": "MOV-008", "date": "2026-04-21", "type": "ENTRADA", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "tons": 55.0,  "previousBalance": 130.0, "newBalance": 185.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-009", "date": "2026-04-21", "type": "SALIDA",  "clientId": "CLI-007", "clientName": "GLP Occidente S.A.S.",    "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-004", "qualityName": "Propano Puro",     "tons": 43.5,  "previousBalance": 200.0, "newBalance": 156.5, "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-010", "date": "2026-04-21", "type": "ENTRADA", "clientId": "CLI-006", "clientName": "Aceites del Pacífico",    "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 75.0,  "previousBalance": 225.0, "newBalance": 300.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-011", "date": "2026-04-20", "type": "SALIDA",  "clientId": "CLI-003", "clientName": "Palmas del Norte",        "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-003", "qualityName": "Industrial",       "tons": 30.0,  "previousBalance": 150.0, "newBalance": 120.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-012", "date": "2026-04-20", "type": "ENTRADA", "clientId": "CLI-004", "clientName": "Combustibles del Caribe", "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-005", "qualityName": "Mezcla Comercial", "tons": 90.0,  "previousBalance": 150.0, "newBalance": 240.0, "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-013", "date": "2026-04-19", "type": "ENTRADA", "clientId": "CLI-009", "clientName": "Agroindustrial Bolívar",  "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "tons": 110.0, "previousBalance": 220.0, "newBalance": 330.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-014", "date": "2026-04-19", "type": "SALIDA",  "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 35.0,  "previousBalance": 302.5, "newBalance": 267.5, "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-015", "date": "2026-04-18", "type": "ENTRADA", "clientId": "CLI-002", "clientName": "PetroAndina Ltda.",        "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-004", "qualityName": "Propano Puro",     "tons": 40.0,  "previousBalance": 50.0,  "newBalance": 90.0,  "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-016", "date": "2026-04-18", "type": "SALIDA",  "clientId": "CLI-006", "clientName": "Aceites del Pacífico",    "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 50.0,  "previousBalance": 275.0, "newBalance": 225.0, "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-017", "date": "2026-04-17", "type": "ENTRADA", "clientId": "CLI-005", "clientName": "Refinería Costa",         "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-002", "qualityName": "Estándar",         "tons": 60.0,  "previousBalance": -1.5,  "newBalance": 58.5,  "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-018", "date": "2026-04-16", "type": "SALIDA",  "clientId": "CLI-004", "clientName": "Combustibles del Caribe", "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-005", "qualityName": "Mezcla Comercial", "tons": 60.0,  "previousBalance": 210.0, "newBalance": 150.0, "userId": "u3", "userName": "Ana Rojas",       "notes": null },
+    { "id": "MOV-019", "date": "2026-04-16", "type": "ENTRADA", "clientId": "CLI-003", "clientName": "Palmas del Norte",        "productId": "PRD-001", "productName": "Aceite de Palma", "qualityId": "Q-001", "qualityName": "Alta Pureza",      "tons": 95.0,  "previousBalance": 270.0, "newBalance": 365.0, "userId": "u2", "userName": "Carlos Mendoza",  "notes": null },
+    { "id": "MOV-020", "date": "2026-04-15", "type": "ENTRADA", "clientId": "CLI-007", "clientName": "GLP Occidente S.A.S.",    "productId": "PRD-002", "productName": "GLP",             "qualityId": "Q-004", "qualityName": "Propano Puro",     "tons": 70.0,  "previousBalance": 130.0, "newBalance": 200.0, "userId": "u3", "userName": "Ana Rojas",       "notes": null }
+  ],
+
+  "reports": [
+    { "id": "RPT-001", "date": "2026-04-23", "status": "PENDIENTE", "clientsIncluded": 10, "initialBalance": 2050, "entries": 180, "exits": 120, "finalBalance": 2110 },
+    { "id": "RPT-002", "date": "2026-04-22", "status": "GENERADO",  "clientsIncluded": 10, "initialBalance": 2035, "entries": 177, "exits": 118, "finalBalance": 2094 },
+    { "id": "RPT-003", "date": "2026-04-21", "status": "GENERADO",  "clientsIncluded": 10, "initialBalance": 2020, "entries": 174, "exits": 116, "finalBalance": 2078 },
+    { "id": "RPT-004", "date": "2026-04-20", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 2005, "entries": 171, "exits": 114, "finalBalance": 2062 },
+    { "id": "RPT-005", "date": "2026-04-19", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1990, "entries": 168, "exits": 112, "finalBalance": 2046 },
+    { "id": "RPT-006", "date": "2026-04-18", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1975, "entries": 165, "exits": 110, "finalBalance": 2030 },
+    { "id": "RPT-007", "date": "2026-04-17", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1960, "entries": 162, "exits": 108, "finalBalance": 2014 },
+    { "id": "RPT-008", "date": "2026-04-16", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1945, "entries": 159, "exits": 106, "finalBalance": 1998 },
+    { "id": "RPT-009", "date": "2026-04-15", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1930, "entries": 156, "exits": 104, "finalBalance": 1982 },
+    { "id": "RPT-010", "date": "2026-04-14", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1915, "entries": 153, "exits": 102, "finalBalance": 1966 },
+    { "id": "RPT-011", "date": "2026-04-13", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1900, "entries": 150, "exits": 100, "finalBalance": 1950 },
+    { "id": "RPT-012", "date": "2026-04-12", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1885, "entries": 147, "exits": 98,  "finalBalance": 1934 },
+    { "id": "RPT-013", "date": "2026-04-11", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1870, "entries": 144, "exits": 96,  "finalBalance": 1918 },
+    { "id": "RPT-014", "date": "2026-04-10", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1855, "entries": 141, "exits": 94,  "finalBalance": 1902 },
+    { "id": "RPT-015", "date": "2026-04-09", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1840, "entries": 138, "exits": 92,  "finalBalance": 1886 },
+    { "id": "RPT-016", "date": "2026-04-08", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1825, "entries": 135, "exits": 90,  "finalBalance": 1870 },
+    { "id": "RPT-017", "date": "2026-04-07", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1810, "entries": 132, "exits": 88,  "finalBalance": 1854 },
+    { "id": "RPT-018", "date": "2026-04-06", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1795, "entries": 129, "exits": 86,  "finalBalance": 1838 },
+    { "id": "RPT-019", "date": "2026-04-05", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1780, "entries": 126, "exits": 84,  "finalBalance": 1822 },
+    { "id": "RPT-020", "date": "2026-04-04", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1765, "entries": 123, "exits": 82,  "finalBalance": 1806 },
+    { "id": "RPT-021", "date": "2026-04-03", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1750, "entries": 120, "exits": 80,  "finalBalance": 1790 },
+    { "id": "RPT-022", "date": "2026-04-02", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1735, "entries": 117, "exits": 78,  "finalBalance": 1774 },
+    { "id": "RPT-023", "date": "2026-04-01", "status": "ENVIADO",   "clientsIncluded": 10, "initialBalance": 1720, "entries": 114, "exits": 76,  "finalBalance": 1758 }
+  ],
+
+  "participation": [
+    { "id": "PC-001", "clientId": "CLI-003", "clientName": "Palmas del Norte",        "productType": "ACEITE", "percentage": 40, "totalBays": 8, "assignedBays": 3, "slaHours": 4, "active": true },
+    { "id": "PC-002", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "productType": "ACEITE", "percentage": 20, "totalBays": 8, "assignedBays": 2, "slaHours": 4, "active": true },
+    { "id": "PC-003", "clientId": "CLI-006", "clientName": "Aceites del Pacífico",    "productType": "ACEITE", "percentage": 20, "totalBays": 8, "assignedBays": 2, "slaHours": 4, "active": true },
+    { "id": "PC-004", "clientId": "CLI-009", "clientName": "Agroindustrial Bolívar",  "productType": "ACEITE", "percentage": 20, "totalBays": 8, "assignedBays": 2, "slaHours": 4, "active": true },
+    { "id": "PC-005", "clientId": "CLI-004", "clientName": "Combustibles del Caribe", "productType": "GLP",   "percentage": 50, "totalBays": 4, "assignedBays": 2, "slaHours": 3, "active": true },
+    { "id": "PC-006", "clientId": "CLI-007", "clientName": "GLP Occidente S.A.S.",    "productType": "GLP",   "percentage": 30, "totalBays": 4, "assignedBays": 1, "slaHours": 3, "active": true },
+    { "id": "PC-007", "clientId": "CLI-002", "clientName": "PetroAndina Ltda.",        "productType": "GLP",   "percentage": 20, "totalBays": 4, "assignedBays": 1, "slaHours": 3, "active": true }
+  ],
+
+  "drivers": [
+    { "id": "DRV-001", "cedula": "1001234567", "name": "Jorge",   "lastName": "Martínez",  "licenseType": "C2", "phone": "3151234501", "runtValidated": true  },
+    { "id": "DRV-002", "cedula": "1002345678", "name": "Luis",    "lastName": "García",    "licenseType": "C2", "phone": "3151234502", "runtValidated": true  },
+    { "id": "DRV-003", "cedula": "1003456789", "name": "Carlos",  "lastName": "Sánchez",   "licenseType": "C3", "phone": "3151234503", "runtValidated": true  },
+    { "id": "DRV-004", "cedula": "1004567890", "name": "Pedro",   "lastName": "López",     "licenseType": "C2", "phone": "3151234504", "runtValidated": true  },
+    { "id": "DRV-005", "cedula": "1005678901", "name": "Miguel",  "lastName": "Hernández", "licenseType": "C3", "phone": "3151234505", "runtValidated": false },
+    { "id": "DRV-006", "cedula": "1006789012", "name": "Andrés",  "lastName": "Torres",    "licenseType": "C2", "phone": "3151234506", "runtValidated": true  },
+    { "id": "DRV-007", "cedula": "1007890123", "name": "Roberto", "lastName": "Díaz",      "licenseType": "C2", "phone": "3151234507", "runtValidated": true  },
+    { "id": "DRV-008", "cedula": "1008901234", "name": "Felipe",  "lastName": "Vargas",    "licenseType": "C3", "phone": "3151234508", "runtValidated": true  }
+  ],
+
+  "driver_registrations": [
+    {
+      "id": "DR-001", "clientId": "CLI-003", "clientName": "Palmas del Norte",
+      "driverId": "DRV-001", "driverName": "Jorge Martínez", "driverCedula": "1001234567",
+      "vehiclePlate": "TTA-456", "vehicleType": "Cisterna", "vehicleCapacity": 32,
+      "documents": [
+        { "type": "SOAT",                 "status": "validado" },
+        { "type": "Tecnomecánica",        "status": "validado" },
+        { "type": "Tarjeta de Propiedad", "status": "validado" },
+        { "type": "Manifesto de Carga",   "status": "cargado"  }
+      ],
+      "productId": "PRD-001", "productName": "Aceite de Palma",
+      "qualityId": "Q-001",   "qualityName": "Alta Pureza",
+      "requestedTons": 28.0, "operationType": "DESCARGUE",
+      "registeredAt": "2026-04-23T06:15:00", "phase": "COMPLETADO", "turnNumber": 1
+    },
+    {
+      "id": "DR-002", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",
+      "driverId": "DRV-002", "driverName": "Luis García", "driverCedula": "1002345678",
+      "vehiclePlate": "LMN-789", "vehicleType": "Cisterna", "vehicleCapacity": 30,
+      "documents": [
+        { "type": "SOAT",                 "status": "validado" },
+        { "type": "Tecnomecánica",        "status": "validado" },
+        { "type": "Tarjeta de Propiedad", "status": "validado" },
+        { "type": "Manifesto de Carga",   "status": "validado" }
+      ],
+      "productId": "PRD-001", "productName": "Aceite de Palma",
+      "qualityId": "Q-001",   "qualityName": "Alta Pureza",
+      "requestedTons": 25.0, "operationType": "CARGUE",
+      "registeredAt": "2026-04-23T06:42:00", "phase": "EN_BAHIA", "turnNumber": 2
+    },
+    {
+      "id": "DR-003", "clientId": "CLI-006", "clientName": "Aceites del Pacífico",
+      "driverId": "DRV-003", "driverName": "Carlos Sánchez", "driverCedula": "1003456789",
+      "vehiclePlate": "BCD-321", "vehicleType": "Cisterna", "vehicleCapacity": 28,
+      "documents": [
+        { "type": "SOAT",                 "status": "validado"  },
+        { "type": "Tecnomecánica",        "status": "cargado"   },
+        { "type": "Tarjeta de Propiedad", "status": "validado"  },
+        { "type": "Manifesto de Carga",   "status": "pendiente" }
+      ],
+      "productId": "PRD-001", "productName": "Aceite de Palma",
+      "qualityId": "Q-002",   "qualityName": "Estándar",
+      "requestedTons": 22.0, "operationType": "CARGUE",
+      "registeredAt": "2026-04-23T07:05:00", "phase": "EN_PESAJE_INICIAL", "turnNumber": 3
+    },
+    {
+      "id": "DR-004", "clientId": "CLI-004", "clientName": "Combustibles del Caribe",
+      "driverId": "DRV-004", "driverName": "Pedro López", "driverCedula": "1004567890",
+      "vehiclePlate": "EFG-654", "vehicleType": "Tanque GLP", "vehicleCapacity": 18,
+      "documents": [
+        { "type": "SOAT",                 "status": "validado" },
+        { "type": "Tecnomecánica",        "status": "validado" },
+        { "type": "Tarjeta de Propiedad", "status": "validado" },
+        { "type": "Manifesto de Carga",   "status": "validado" }
+      ],
+      "productId": "PRD-002", "productName": "GLP",
+      "qualityId": "Q-005",   "qualityName": "Mezcla Comercial",
+      "requestedTons": 15.0, "operationType": "CARGUE",
+      "registeredAt": "2026-04-23T07:28:00", "phase": "EN_PATIO", "turnNumber": 4
+    },
+    {
+      "id": "DR-005", "clientId": "CLI-003", "clientName": "Palmas del Norte",
+      "driverId": "DRV-005", "driverName": "Miguel Hernández", "driverCedula": "1005678901",
+      "vehiclePlate": "HIJ-987", "vehicleType": "Cisterna", "vehicleCapacity": 32,
+      "documents": [
+        { "type": "SOAT",                 "status": "validado"  },
+        { "type": "Tecnomecánica",        "status": "pendiente" },
+        { "type": "Tarjeta de Propiedad", "status": "cargado"   },
+        { "type": "Manifesto de Carga",   "status": "pendiente" }
+      ],
+      "productId": "PRD-001", "productName": "Aceite de Palma",
+      "qualityId": "Q-001",   "qualityName": "Alta Pureza",
+      "requestedTons": 30.0, "operationType": "DESCARGUE",
+      "registeredAt": "2026-04-23T07:55:00", "phase": "CONFIRMADO", "turnNumber": 5
+    },
+    {
+      "id": "DR-006", "clientId": "CLI-009", "clientName": "Agroindustrial Bolívar",
+      "driverId": "DRV-006", "driverName": "Andrés Torres", "driverCedula": "1006789012",
+      "vehiclePlate": "KLM-147", "vehicleType": "Cisterna", "vehicleCapacity": 30,
+      "documents": [
+        { "type": "SOAT",                 "status": "cargado" },
+        { "type": "Tecnomecánica",        "status": "cargado" },
+        { "type": "Tarjeta de Propiedad", "status": "validado" },
+        { "type": "Manifesto de Carga",   "status": "cargado" }
+      ],
+      "productId": "PRD-001", "productName": "Aceite de Palma",
+      "qualityId": "Q-002",   "qualityName": "Estándar",
+      "requestedTons": 26.0, "operationType": "CARGUE",
+      "registeredAt": "2026-04-23T08:10:00", "phase": "TURNO_ASIGNADO", "turnNumber": 6
+    },
+    {
+      "id": "DR-007", "clientId": "CLI-007", "clientName": "GLP Occidente S.A.S.",
+      "driverId": "DRV-007", "driverName": "Roberto Díaz", "driverCedula": "1007890123",
+      "vehiclePlate": "NOP-258", "vehicleType": "Tanque GLP", "vehicleCapacity": 20,
+      "documents": [
+        { "type": "SOAT",                 "status": "cargado"   },
+        { "type": "Tecnomecánica",        "status": "cargado"   },
+        { "type": "Tarjeta de Propiedad", "status": "cargado"   },
+        { "type": "Manifesto de Carga",   "status": "pendiente" }
+      ],
+      "productId": "PRD-002", "productName": "GLP",
+      "qualityId": "Q-004",   "qualityName": "Propano Puro",
+      "requestedTons": 18.0, "operationType": "CARGUE",
+      "registeredAt": "2026-04-23T08:35:00", "phase": "PRE_REGISTRO", "turnNumber": null
+    },
+    {
+      "id": "DR-008", "clientId": "CLI-001", "clientName": "BioEnergía S.A.",
+      "driverId": "DRV-008", "driverName": "Felipe Vargas", "driverCedula": "1008901234",
+      "vehiclePlate": "QRS-369", "vehicleType": "Cisterna", "vehicleCapacity": 28,
+      "documents": [
+        { "type": "SOAT",                 "status": "pendiente" },
+        { "type": "Tecnomecánica",        "status": "pendiente" },
+        { "type": "Tarjeta de Propiedad", "status": "pendiente" },
+        { "type": "Manifesto de Carga",   "status": "pendiente" }
+      ],
+      "productId": "PRD-001", "productName": "Aceite de Palma",
+      "qualityId": "Q-001",   "qualityName": "Alta Pureza",
+      "requestedTons": 24.0, "operationType": "CARGUE",
+      "registeredAt": "2026-04-23T08:52:00", "phase": "PRE_REGISTRO", "turnNumber": null
+    }
+  ],
+
+  "turns": [
+    { "id": "T-001", "number": 1, "clientId": "CLI-003", "clientName": "Palmas del Norte",        "clientParticipation": 40, "driverName": "Jorge Martínez",   "driverCedula": "1001234567", "vehiclePlate": "TTA-456", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",      "operationType": "DESCARGUE", "requestedTons": 28.0, "assignedBay": 1, "phase": "COMPLETADO",        "arrivalTime": "2026-04-23T06:15:00", "confirmedAt": "2026-04-23T06:22:00", "waitingMinutes": 7  },
+    { "id": "T-002", "number": 2, "clientId": "CLI-001", "clientName": "BioEnergía S.A.",         "clientParticipation": 20, "driverName": "Luis García",      "driverCedula": "1002345678", "vehiclePlate": "LMN-789", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",      "operationType": "CARGUE",    "requestedTons": 25.0, "assignedBay": 2, "phase": "EN_BAHIA",          "arrivalTime": "2026-04-23T06:42:00", "confirmedAt": "2026-04-23T06:50:00", "waitingMinutes": 8  },
+    { "id": "T-003", "number": 3, "clientId": "CLI-006", "clientName": "Aceites del Pacífico",    "clientParticipation": 20, "driverName": "Carlos Sánchez",   "driverCedula": "1003456789", "vehiclePlate": "BCD-321", "productName": "Aceite de Palma", "qualityName": "Estándar",         "operationType": "CARGUE",    "requestedTons": 22.0, "assignedBay": 3, "phase": "EN_PESAJE_INICIAL", "arrivalTime": "2026-04-23T07:05:00", "confirmedAt": "2026-04-23T07:12:00", "waitingMinutes": 7  },
+    { "id": "T-004", "number": 4, "clientId": "CLI-004", "clientName": "Combustibles del Caribe", "clientParticipation": 50, "driverName": "Pedro López",      "driverCedula": "1004567890", "vehiclePlate": "EFG-654", "productName": "GLP",             "qualityName": "Mezcla Comercial", "operationType": "CARGUE",    "requestedTons": 15.0, "assignedBay": 5, "phase": "EN_PATIO",          "arrivalTime": "2026-04-23T07:28:00", "confirmedAt": "2026-04-23T07:35:00", "waitingMinutes": 7  },
+    { "id": "T-005", "number": 5, "clientId": "CLI-003", "clientName": "Palmas del Norte",        "clientParticipation": 40, "driverName": "Miguel Hernández", "driverCedula": "1005678901", "vehiclePlate": "HIJ-987", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",      "operationType": "DESCARGUE", "requestedTons": 30.0, "assignedBay": null, "phase": "CONFIRMADO",        "arrivalTime": "2026-04-23T07:55:00", "confirmedAt": "2026-04-23T08:02:00", "waitingMinutes": 32 },
+    { "id": "T-006", "number": 6, "clientId": "CLI-009", "clientName": "Agroindustrial Bolívar",  "clientParticipation": 20, "driverName": "Andrés Torres",    "driverCedula": "1006789012", "vehiclePlate": "KLM-147", "productName": "Aceite de Palma", "qualityName": "Estándar",         "operationType": "CARGUE",    "requestedTons": 26.0, "assignedBay": null, "phase": "TURNO_ASIGNADO",    "arrivalTime": "2026-04-23T08:10:00", "confirmedAt": null,                  "waitingMinutes": 0  },
+    { "id": "T-007", "number": 7, "clientId": "CLI-007", "clientName": "GLP Occidente S.A.S.",    "clientParticipation": 30, "driverName": "Roberto Díaz",     "driverCedula": "1007890123", "vehiclePlate": "NOP-258", "productName": "GLP",             "qualityName": "Propano Puro",    "operationType": "CARGUE",    "requestedTons": 18.0, "assignedBay": null, "phase": "PRE_REGISTRO",      "arrivalTime": "2026-04-23T08:35:00", "confirmedAt": null,                  "waitingMinutes": 0  }
+  ],
+
+  "checklist_template": [
+    { "id": "CL-01", "label": "Cédula del conductor coincide con RUNT",        "category": "CONDUCTOR",  "required": true  },
+    { "id": "CL-02", "label": "Licencia de conducción vigente y correcta",     "category": "CONDUCTOR",  "required": true  },
+    { "id": "CL-03", "label": "Placa del vehículo coincide con solicitud",     "category": "VEHICULO",   "required": true  },
+    { "id": "CL-04", "label": "Estado general del vehículo aceptable",         "category": "VEHICULO",   "required": true  },
+    { "id": "CL-05", "label": "Cisterna limpia y sin contaminantes",           "category": "VEHICULO",   "required": true  },
+    { "id": "CL-06", "label": "Sellos del vehículo íntegros al ingreso",       "category": "VEHICULO",   "required": true  },
+    { "id": "CL-07", "label": "SOAT vigente",                                  "category": "DOCUMENTOS", "required": true  },
+    { "id": "CL-08", "label": "Tecnomecánica vigente",                         "category": "DOCUMENTOS", "required": true  },
+    { "id": "CL-09", "label": "Tarjeta de propiedad corresponde al vehículo",  "category": "DOCUMENTOS", "required": true  },
+    { "id": "CL-10", "label": "Manifesto de carga cargado en sistema",         "category": "DOCUMENTOS", "required": true  },
+    { "id": "CL-11", "label": "Equipo de seguridad presente (casco, guantes)", "category": "SEGURIDAD",  "required": true  },
+    { "id": "CL-12", "label": "Extintor vigente en el vehículo",               "category": "SEGURIDAD",  "required": false }
+  ],
+
+  "patio_records": [
+    {
+      "id": "PR-001", "turnId": "T-004", "turnNumber": 4,
+      "driverName": "Pedro López",    "driverCedula": "1004567890", "vehiclePlate": "EFG-654",
+      "clientName": "Combustibles del Caribe", "productName": "GLP", "qualityName": "Mezcla Comercial",
+      "operationType": "CARGUE", "requestedTons": 15.0, "entryTime": "2026-04-23T07:42:00",
+      "qualityStatus": "APROBADO", "qualityLabNotes": "Muestra conforme. Propano/Butano 60/40 verificado.",
+      "assignedBay": 5, "status": "APROBADO"
+    },
+    {
+      "id": "PR-002", "turnId": "T-002", "turnNumber": 2,
+      "driverName": "Luis García",    "driverCedula": "1002345678", "vehiclePlate": "LMN-789",
+      "clientName": "BioEnergía S.A.", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",
+      "operationType": "CARGUE", "requestedTons": 25.0, "entryTime": "2026-04-23T07:05:00",
+      "qualityStatus": "APROBADO", "qualityLabNotes": "Índice de acidez 0.08%. Aprobado.",
+      "assignedBay": 2, "status": "APROBADO"
+    },
+    {
+      "id": "PR-003", "turnId": "T-003", "turnNumber": 3,
+      "driverName": "Carlos Sánchez", "driverCedula": "1003456789", "vehiclePlate": "BCD-321",
+      "clientName": "Aceites del Pacífico", "productName": "Aceite de Palma", "qualityName": "Estándar",
+      "operationType": "CARGUE", "requestedTons": 22.0, "entryTime": "2026-04-23T07:55:00",
+      "qualityStatus": "PENDIENTE", "qualityLabNotes": null,
+      "assignedBay": null, "status": "EN_CALIDAD"
+    }
+  ],
+
+  "weighing_records": [
+    {
+      "id": "WR-001", "turnId": "T-001", "turnNumber": 1,
+      "vehiclePlate": "TTA-456", "driverName": "Jorge Martínez",
+      "clientName": "Palmas del Norte", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",
+      "operationType": "DESCARGUE", "requestedTons": 28.0, "assignedBay": 1,
+      "initialWeight": 42.8, "finalWeight": 14.9, "netWeight": 27.9,
+      "status": "COMPLETADO",
+      "initialWeightTime": "2026-04-23T06:28:00",
+      "finalWeightTime":   "2026-04-23T09:15:00"
+    },
+    {
+      "id": "WR-002", "turnId": "T-002", "turnNumber": 2,
+      "vehiclePlate": "LMN-789", "driverName": "Luis García",
+      "clientName": "BioEnergía S.A.", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",
+      "operationType": "CARGUE", "requestedTons": 25.0, "assignedBay": 2,
+      "initialWeight": 16.2, "finalWeight": null, "netWeight": null,
+      "status": "INICIAL_REGISTRADO",
+      "initialWeightTime": "2026-04-23T07:18:00",
+      "finalWeightTime": null
+    },
+    {
+      "id": "WR-003", "turnId": "T-003", "turnNumber": 3,
+      "vehiclePlate": "BCD-321", "driverName": "Carlos Sánchez",
+      "clientName": "Aceites del Pacífico", "productName": "Aceite de Palma", "qualityName": "Estándar",
+      "operationType": "CARGUE", "requestedTons": 22.0, "assignedBay": null,
+      "initialWeight": null, "finalWeight": null, "netWeight": null,
+      "status": "ESPERANDO_INICIAL",
+      "initialWeightTime": null, "finalWeightTime": null
+    }
+  ],
+
+  "bay_operations": [
+    {
+      "id": "BO-001", "bay": 1, "turnId": "T-001", "turnNumber": 1,
+      "vehiclePlate": "TTA-456", "driverName": "Jorge Martínez",
+      "clientName": "Palmas del Norte", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",
+      "operationType": "DESCARGUE", "tons": 27.9,
+      "status": "SALIDA_AUTORIZADA",
+      "startTime": "2026-04-23T06:45:00",
+      "endTime":   "2026-04-23T09:05:00",
+      "exitOrderNumber": "SAL-2026-001",
+      "exitOrderGenerated": true,
+      "exitAuthorized": true,
+      "exitTime": "2026-04-23T09:22:00"
+    },
+    {
+      "id": "BO-002", "bay": 2, "turnId": "T-002", "turnNumber": 2,
+      "vehiclePlate": "LMN-789", "driverName": "Luis García",
+      "clientName": "BioEnergía S.A.", "productName": "Aceite de Palma", "qualityName": "Alta Pureza",
+      "operationType": "CARGUE", "tons": 25.0,
+      "status": "EN_PROCESO",
+      "startTime": "2026-04-23T07:35:00",
+      "endTime": null,
+      "exitOrderNumber": null,
+      "exitOrderGenerated": false,
+      "exitAuthorized": false,
+      "exitTime": null
+    },
+    {
+      "id": "BO-003", "bay": 5, "turnId": "T-004", "turnNumber": 4,
+      "vehiclePlate": "EFG-654", "driverName": "Pedro López",
+      "clientName": "Combustibles del Caribe", "productName": "GLP", "qualityName": "Mezcla Comercial",
+      "operationType": "CARGUE", "tons": 15.0,
+      "status": "EN_PROCESO",
+      "startTime": "2026-04-23T08:10:00",
+      "endTime": null,
+      "exitOrderNumber": null,
+      "exitOrderGenerated": false,
+      "exitAuthorized": false,
+      "exitTime": null
+    }
+  ],
+
+  "bay_occupancy": [
+    { "bay": 1, "status": "libre" },
+    { "bay": 2, "status": "ocupada",       "clientName": "BioEnergía S.A.",         "operationType": "CARGUE", "startTime": "2026-04-23T07:35:00", "progress": 65 },
+    { "bay": 3, "status": "libre" },
+    { "bay": 4, "status": "mantenimiento" },
+    { "bay": 5, "status": "ocupada",       "clientName": "Combustibles del Caribe", "operationType": "CARGUE", "startTime": "2026-04-23T08:10:00", "progress": 40 },
+    { "bay": 6, "status": "libre" },
+    { "bay": 7, "status": "libre" },
+    { "bay": 8, "status": "libre" }
+  ],
+
+  "runt_db": [
+    { "cedula": "12345678", "name": "Carlos",  "lastName": "Martínez",  "license": "C3", "expiry": "2028-06", "phone": "310 555 0101", "vehicleType": "Camión Cisterna",      "capacity": 30 },
+    { "cedula": "87654321", "name": "Ana",     "lastName": "Rodríguez", "license": "C2", "expiry": "2027-03", "phone": "320 555 0202", "vehicleType": "Tractomula Cisterna",  "capacity": 45 },
+    { "cedula": "11223344", "name": "Miguel",  "lastName": "Torres",    "license": "C3", "expiry": "2029-01", "phone": "300 555 0303", "vehicleType": "Camión Cisterna",      "capacity": 28 },
+    { "cedula": "55667788", "name": "Lucía",   "lastName": "Vargas",    "license": "CE", "expiry": "2024-09", "phone": "315 555 0404", "vehicleType": "Tractomula Cisterna",  "capacity": 50 }
+  ],
+
+  "kpi_phase_times": [
+    { "phase": "Turnamiento", "avgMinutes": 8,  "color": "#1E88E5" },
+    { "phase": "Patio",       "avgMinutes": 22, "color": "#2E7D32" },
+    { "phase": "Pesaje",      "avgMinutes": 12, "color": "#F57F17" },
+    { "phase": "Bahía",       "avgMinutes": 95, "color": "#6A1B9A" },
+    { "phase": "Salida",      "avgMinutes": 15, "color": "#00838F" }
+  ],
+
+  "dashboard_stats": {
+    "totalInventory": 2200.5,
+    "activeClients": 9,
+    "todayMovements": 4,
+    "capacityUsed": 68,
+    "inventoryTrend": 4.2
+  },
+
+  "_meta": {
+    "generatedAt": "2026-04-27",
+    "baseDate": "2026-04-23",
+    "note": "Fechas relativas resueltas: daysBack(N) = baseDate - N días. todayAt(H,M) = baseDate a las HH:MM:00"
+  }
+}
